@@ -2,16 +2,9 @@ import 'babel-polyfill';
 import './main.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import store from './store/store';
+import CounterContainer from './components/CounterContainer';
 
-const render = () => {
-  document.body.innerText = store.getState();
-};
-
-store.subscribe(render);
-
-document.addEventListener('click', () => {
-  store.dispatch({ type: 'INCREMENT' });
-});
-
-render();
+ReactDOM.render(
+  <CounterContainer />,
+  document.getElementById('app')
+);
