@@ -2,22 +2,9 @@ import 'babel-polyfill';
 import './main.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import store from './store/store';
+import TodoApp from './components/TodoApp';
 
-console.log(store.getState());
-store.dispatch({
-  type: 'ADD_TODO',
-  id: 0,
-  text: 'Learn Redux'
-});
-console.log(store.getState());
-store.dispatch({
-  type: 'TOGGLE_TODO',
-  id: 0
-});
-console.log(store.getState());
-store.dispatch({
-  type: 'SET_VISIBILITY_FILTER',
-  filter: 'meow'
-});
-console.log(store.getState());
+ReactDOM.render(
+  <TodoApp />,
+  document.getElementById('app')
+);
