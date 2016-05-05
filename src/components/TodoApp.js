@@ -9,6 +9,7 @@ class TodoApp extends Component {
     this.state = { todos: [], inputValue: '' };
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleItemClick = this.handleItemClick.bind(this);
   }
 
   componentDidMount() {
@@ -44,6 +45,13 @@ class TodoApp extends Component {
     });
   }
 
+  handleItemClick(id) {
+    store.dispatch({
+      type: 'TOGGLE_TODO',
+      id
+    });
+  }
+
   render() {
     const { inputValue, todos } = this.state;
 
@@ -54,7 +62,10 @@ class TodoApp extends Component {
           onInputChange={this.handleInputChange}
           onFormSubmit={this.handleFormSubmit}
         />
-        <TodoItemList todos={todos} />
+        <TodoItemList
+          todos={todos}
+          onItemClick={this.handleItemClick}
+        />
       </div>
     );
   }
