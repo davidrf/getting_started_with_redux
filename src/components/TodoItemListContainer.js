@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import TodoItemList from './TodoItemList';
-import store from '../store/store';
 
 class TodoItemListContainer extends Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+    const { store } = this.context;
     const { todos, visibilityFilter } = store.getState();
     this.state = { todos, visibilityFilter };
     this.handleItemClick = this.handleItemClick.bind(this);
   }
 
   componentDidMount() {
+    const { store } = this.context;
     let removeTodosListener = store.subscribe(() => {
       let { todos, visibilityFilter } = store.getState();
       this.setState({ todos, visibilityFilter });
@@ -24,6 +25,7 @@ class TodoItemListContainer extends Component {
   }
 
   handleItemClick(id) {
+    const { store } = this.context;
     store.dispatch({
       type: 'TOGGLE_TODO',
       id
@@ -54,5 +56,8 @@ class TodoItemListContainer extends Component {
     );
   }
 }
+TodoItemListContainer.contextTypes = {
+  store: React.PropTypes.object
+};
 
 export default TodoItemListContainer;

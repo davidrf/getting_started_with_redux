@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import FilterLinks from './FilterLinks';
-import store from '../store/store';
 
 class FilterLinksContainer extends Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+    const { store } = this.context;
     const { visibilityFilter } = store.getState();
     this.state = { visibilityFilter };
     this.handleFilterLinkClick = this.handleFilterLinkClick.bind(this);
   }
 
   componentDidMount() {
+    const { store } = this.context;
     let removeTodosListener = store.subscribe(() => {
       let { visibilityFilter } = store.getState();
       this.setState({ visibilityFilter });
@@ -24,6 +25,7 @@ class FilterLinksContainer extends Component {
   }
 
   handleFilterLinkClick(event, filter) {
+    const { store } = this.context;
     event.preventDefault();
     store.dispatch({
       type: 'SET_VISIBILITY_FILTER',
@@ -48,5 +50,8 @@ class FilterLinksContainer extends Component {
     );
   }
 }
+FilterLinksContainer.contextTypes = {
+  store: React.PropTypes.object
+};
 
 export default FilterLinksContainer;

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import TodoItemForm from './TodoItemForm';
-import store from '../store/store';
 
 class TodoItemFormContainer extends Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.state = { inputValue: '' };
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -16,6 +15,7 @@ class TodoItemFormContainer extends Component {
   }
 
   handleFormSubmit(event) {
+    const { store } = this.context;
     event.preventDefault();
     const { inputValue } = this.state;
     this.setState({ inputValue: '' });
@@ -38,6 +38,9 @@ class TodoItemFormContainer extends Component {
     );
   }
 }
+TodoItemFormContainer.contextTypes = {
+  store: React.PropTypes.object
+};
 
 export default TodoItemFormContainer;
 
