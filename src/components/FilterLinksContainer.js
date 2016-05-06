@@ -1,57 +1,45 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import FilterLinks from './FilterLinks';
 
-class FilterLinksContainer extends Component {
-  constructor(props, context) {
-    super(props, context);
-    const { store } = this.context;
-    const { visibilityFilter } = store.getState();
-    this.state = { visibilityFilter };
-    this.handleFilterLinkClick = this.handleFilterLinkClick.bind(this);
+const mapStateToProps = state => {
+  return {
+    visibilityFilter: state.visibilityFilter
   }
-
-  componentDidMount() {
-    const { store } = this.context;
-    let removeTodosListener = store.subscribe(() => {
-      let { visibilityFilter } = store.getState();
-      this.setState({ visibilityFilter });
-    });
-
-    this.setState({ removeTodosListener });
-  }
-
-  componentWillUnmount() {
-    this.state.removeTodosListener();
-  }
-
-  handleFilterLinkClick(event, filter) {
-    const { store } = this.context;
-    event.preventDefault();
-    store.dispatch({
-      type: 'SET_VISIBILITY_FILTER',
-      filter
-    });
-  }
-
-  render() {
-    const { visibilityFilter } = this.state;
-    let filters = [
-      { filter: 'SHOW_ALL', text: 'All' },
-      { filter: 'SHOW_ACTIVE', text: 'Active' },
-      { filter: 'SHOW_COMPLETED', text: 'Completed' }
-    ];
-
-    return (
-      <FilterLinks
-        currentFilter={visibilityFilter}
-        filters={filters}
-        onFilterLinkClick={this.handleFilterLinkClick}
-      />
-    );
-  }
-}
-FilterLinksContainer.contextTypes = {
-  store: React.PropTypes.object
 };
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onFilterLinkClick(event, filter)  {
+      event.preventDefault();
+      dispatch({
+        type: 'SET_VISIBILITY_FILTER',
+        filter
+      });
+    }
+  }
+};
+
+let FilterLinksContainer = props => {
+  const { visibilityFilter, onFilterLinkClick } = props;
+  let filters = [
+    { filter: 'SHOW_ALL', text: 'All' },
+    { filter: 'SHOW_ACTIVE', text: 'Active' },
+    { filter: 'SHOW_COMPLETED', text: 'Completed' }
+  ];
+
+  return (
+    <FilterLinks
+      currentFilter={visibilityFilter}
+      filters={filters}
+      onFilterLinkClick={onFilterLinkClick}
+    />
+  );
+};
+
+FilterLinksContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FilterLinksContainer);
 
 export default FilterLinksContainer;

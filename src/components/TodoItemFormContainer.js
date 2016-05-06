@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import TodoItemForm from './TodoItemForm';
 
 class TodoItemFormContainer extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
     this.state = { inputValue: '' };
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   handleInputChange(event) {
@@ -15,16 +16,16 @@ class TodoItemFormContainer extends Component {
   }
 
   handleFormSubmit(event) {
-    const { store } = this.context;
     event.preventDefault();
+    const { dispatch } = this.props;
     const { inputValue } = this.state;
-    this.setState({ inputValue: '' });
-    store.dispatch({
+    dispatch({
       type: 'ADD_TODO',
       text: inputValue,
       id: Date.now()
     });
-  }
+    this.setState({ inputValue: '' });
+  };
 
   render() {
     const { inputValue } = this.state;
@@ -38,9 +39,7 @@ class TodoItemFormContainer extends Component {
     );
   }
 }
-TodoItemFormContainer.contextTypes = {
-  store: React.PropTypes.object
-};
 
+TodoItemFormContainer = connect()(TodoItemFormContainer);
 export default TodoItemFormContainer;
 
