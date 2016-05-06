@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TodoItemForm from './TodoItemForm';
+import addTodo from '../actions/addTodo';
 
 class TodoItemFormContainer extends Component {
   constructor(props) {
@@ -19,11 +20,7 @@ class TodoItemFormContainer extends Component {
     event.preventDefault();
     const { dispatch } = this.props;
     const { inputValue } = this.state;
-    dispatch({
-      type: 'ADD_TODO',
-      text: inputValue,
-      id: Date.now()
-    });
+    dispatch(addTodo(inputValue));
     this.setState({ inputValue: '' });
   };
 
